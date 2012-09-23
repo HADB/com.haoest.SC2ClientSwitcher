@@ -1,4 +1,4 @@
 com.haoest.SC2ClientSwitcher
 ===============
 
-好易思特HAOest Form
+星际争霸2客户端切换器
