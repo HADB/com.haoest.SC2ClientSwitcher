@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Data.SQLite;
 
 namespace com.haoest.SC2ClientSwitcher
 {
@@ -75,6 +74,21 @@ namespace com.haoest.SC2ClientSwitcher
         public static Client GetClientByClientListItem(String item)
         {
             String locale = Client.GetLocaleFromClientListItem(item);
+            String[] clientStr = ClientDAL.GetClientDataReader(locale);
+            if (clientStr != null)
+            {
+                Client client = new Client();
+                client.Name = clientStr[0];
+                client.Locale = clientStr[1];
+                client.Region = clientStr[2];
+                client.GameFolder = clientStr[3];
+                return client;
+            }
+            else return null;
+        }
+
+        public static Client GetClientByLocale(String locale)
+        {
             String[] clientStr = ClientDAL.GetClientDataReader(locale);
             if (clientStr != null)
             {

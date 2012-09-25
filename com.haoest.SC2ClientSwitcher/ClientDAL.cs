@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Data;
 using System.Data.SQLite;
 using System.Windows.Forms;
-using System.Data;
 
 namespace com.haoest.SC2ClientSwitcher
 {
@@ -115,7 +113,7 @@ namespace com.haoest.SC2ClientSwitcher
             DataTable dt = new DataTable();
             try
             {
-                SQLiteConnection conn = new SQLiteConnection("Data Source=settings.db;");
+                SQLiteConnection conn = new SQLiteConnection(@"Data Source =" + System.Windows.Forms.Application.StartupPath + "\\settings.db;");
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand(conn);
                 cmd.CommandText = "SELECT * FROM clientlist";

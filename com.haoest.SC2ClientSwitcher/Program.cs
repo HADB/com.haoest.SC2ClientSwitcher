@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using com.haoest.JumpListHelpers;
 
 namespace com.haoest.SC2ClientSwitcher
 {
@@ -32,7 +33,7 @@ namespace com.haoest.SC2ClientSwitcher
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main());
+            ProgramManager.Run(typeof(MainForm), "星际2客户端切换器 For 1.5.0+   " + String.Format("版本号：{0}", About.AssemblyVersion));
         }
     }
 }

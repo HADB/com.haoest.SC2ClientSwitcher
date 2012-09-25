@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+﻿using com.haoest.JumpListHelpers;
 using com.haoest.SC2ClientSwitcher.Modules;
+using System;
+using System.Data;
 using System.IO;
+using System.Windows.Forms;
 
 namespace com.haoest.SC2ClientSwitcher
 {
-    public partial class Main : Form
+    public partial class MainForm : JumpListMainFormBase
     {
-        public Main()
+        public MainForm()
         {
             InitializeComponent();
+            this.JumpListCommandReceived += new EventHandler<CommandEventArgs>(MainForm_JumpListCommandReceived);
             this.Text = "星际2客户端切换器 For 1.5.0+   " + String.Format("版本号：{0}", About.AssemblyVersion);
         }
 
@@ -45,29 +43,7 @@ namespace com.haoest.SC2ClientSwitcher
         /// <param name="e"></param>
         private void Button_RunClient_Click(object sender, EventArgs e)
         {
-            String locale = Client.GetLocaleFromClientListItem(this.ClientList.SelectedItem.ToString());
-            LocaleChanger.ChangeVarTXT(locale, locale);
-            Client client = Client.GetClientByClientListItem(this.ClientList.SelectedItem.ToString());
-            String path = client.GameFolder + "\\StarCraft II.exe";
-            if (File.Exists(path))
-            {
-                System.Diagnostics.Process.Start(path);
-                Application.Exit();
-            }
-            else
-            {
-                MessageBox.Show(path + "\n指定位置找不到客户端，请重新编辑游戏所在目录！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                try
-                {
-                    EditClient open = new EditClient(client);
-                    open.ShowDialog();
-                }
-                catch (Exception ex)
-                {
-                    //Do　any　logging　operation　here　if　necessary  
-                    MessageBox.Show(ex.Message + " \n\n" + ex.Source + "\n\n" + ex.StackTrace, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            RunClient(this.ClientList.SelectedItem.ToString().Split('-')[2].Trim());
         }
 
         private void Button_DeleteClient_Click(object sender, EventArgs e)
@@ -95,7 +71,7 @@ namespace com.haoest.SC2ClientSwitcher
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 ClientList.Items.Add(dt.Rows[i]["region"] + " - " + dt.Rows[i]["name"] + " - " + dt.Rows[i]["locale"]);
-                //if (i % 2==0) ClientList.Items[i]
+                JumpListManager.AddCategorySelfLink("快速启动", dt.Rows[i]["locale"].ToString(), dt.Rows[i]["locale"].ToString());
             }
 
             if (ClientList.Items.Count == 0)
@@ -160,6 +136,43 @@ namespace com.haoest.SC2ClientSwitcher
             System.Diagnostics.Process.Start("http://sc2.haoest.com/archives/184");
         }
 
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            JumpListManager.AddCategoryLink("链接", "星际争霸2战术资源站", "http://sc2.haoest.com", "shell32.dll", 220);
+            JumpListManager.Refresh();
+        }
+
+        private void MainForm_JumpListCommandReceived(object sender, CommandEventArgs e)
+        {
+            RunClient(e.CommandName);
+        }
+
+        private void RunClient(String locale)
+        {
+            LocaleChanger.ChangeVarTXT(locale, locale);
+            Client client = Client.GetClientByLocale(locale);
+            String path = client.GameFolder + "\\StarCraft II.exe";
+            if (File.Exists(path))
+            {
+                System.Diagnostics.Process.Start(path);
+                Application.Exit();
+            }
+            else
+            {
+                MessageBox.Show(path + "\n指定位置找不到客户端，请重新编辑游戏所在目录！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                try
+                {
+                    EditClient open = new EditClient(client);
+                    open.ShowDialog();
+                }
+                catch (Exception ex)
+                {
+                    //Do　any　logging　operation　here　if　necessary  
+                    MessageBox.Show(ex.Message + " \n\n" + ex.Source + "\n\n" + ex.StackTrace, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
 
     }
 }
