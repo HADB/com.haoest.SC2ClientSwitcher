@@ -1,5 +1,6 @@
 ﻿using com.haoest.JumpListHelpers;
 using com.haoest.SC2ClientSwitcher.Modules;
+using com.haoest.Utils.Others;
 using System;
 using System.Data;
 using System.IO;
@@ -13,7 +14,7 @@ namespace com.haoest.SC2ClientSwitcher
         {
             InitializeComponent();
             this.JumpListCommandReceived += new EventHandler<CommandEventArgs>(MainForm_JumpListCommandReceived);
-            this.Text = "星际2客户端切换器 For 1.5.0+   " + String.Format("版本号：{0}", About.AssemblyVersion);
+            this.Text = "星际2客户端切换器 For 1.5.0+   " + String.Format("版本号：{0}", Info.AssemblyVersion);
         }
 
         private void Button_AddClient_Click(object sender, EventArgs e)

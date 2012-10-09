@@ -183,6 +183,5 @@ namespace com.haoest.SC2ClientSwitcher
                 return null;
             }
         }
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using com.haoest.Utils.Others;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -14,7 +15,7 @@ namespace com.haoest.SC2ClientSwitcher
             InitializeComponent();
             this.Text = String.Format("关于 {0}", AssemblyTitle);
             this.labelProductName.Text = AssemblyProduct;
-            this.labelVersion.Text = String.Format("版本 {0}", AssemblyVersion);
+            this.labelVersion.Text = String.Format("版本 {0}", Info.AssemblyVersion);
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;
@@ -36,14 +37,6 @@ namespace com.haoest.SC2ClientSwitcher
                     }
                 }
                 return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
-            }
-        }
-
-        public static string AssemblyVersion
-        {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
         }
 
